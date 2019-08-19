@@ -101,7 +101,7 @@ keymanager_configure() {
 
   sudo mv /tmp/op /usr/local/bin
   sudo chown root:staff /usr/local/bin/op
-#  eval $(op signin $OP_SUBDOMAIN) 
+  eval $(op signin $OP_SUBDOMAIN) 
 }
 
 keymanager_install_ssh_key_pair() {
@@ -141,8 +141,6 @@ tmux_install_plugins() {
 vim_install_plugins() {
   wget https://www.vim.org/scripts/download_script.php\?src_id\=14937 -O ~/.vim/colors/twilight256.vim
   git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-
-  vim +PluginInstall +qall
 }
 
 dotfiles_install() {
@@ -152,6 +150,8 @@ dotfiles_install() {
 }
 
 complete_tasks() {
+  vim +PluginInstall +qall
+
   echo "System bootstrapped!\n\n"
   echo "Remember to reload your zsh environment: source ~/.zshrc\n"
   echo "Remember to install tmux plugins within tmux: prefix + I\n"
