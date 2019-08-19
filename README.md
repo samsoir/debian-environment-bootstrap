@@ -9,7 +9,7 @@ This project was created after Chrome OS destroyed my Linux environment for the 
 To bootstrap a new environment run the following command from your user account in Debian
 
 ```
-sh -c "$(wget -O- https://raw.githubusercontent.com/samsoir/debian-environment-bootstrap/master/install.sh)"
+bash -c "$(wget -O- https://raw.githubusercontent.com/samsoir/debian-environment-bootstrap/master/install.sh)"
 ```
 
 ## License
