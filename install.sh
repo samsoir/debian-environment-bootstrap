@@ -1,6 +1,8 @@
 #!/bin/bash
 
 ARCH=amd64
+APT_REQUIRED_PACKAGES='dirmngr unzip build-essential git gnupg zsh jq tmux vim'
+APT_INSTALL_FLAGS='--install-recommends --assume-yes'
 OP_VERSION=0.5.7
 OP_SUBDOMAIN=my
 OP_GNUPG_KEY=3FEF9748469ADBE15DA7CA80AC2D62742012EA22
@@ -57,11 +59,12 @@ update_aptitude() {
   
   if [ "$?" -ne 0 ]; then
     echo "Unable to update aptitude! Check your network settings. Aborting!"
+    exit 1
   fi
 }
 
 install_prerequisites() {
-  sudo apt-get --assume-yes install build-essential git gnupg zsh jq tmux vim
+  sudo apt-get $APT_INSTALL_FLAGS install $APT_REQUIRED_PACKAGES
 }
 
 1password_obtain_gnupg_key() {
@@ -87,7 +90,7 @@ install_prerequisites() {
 keymanager_configure() {
   1password_obtain_gnupg_key
 
-  OP_ZIPFILE="/tmp/op_linux_${ARCH}_v{$OP_VERSION}.zip"
+  OP_ZIPFILE="/tmp/op_linux_${ARCH}_v${OP_VERSION}.zip"
   wget "https://cache.agilebits.com/dist/1P/op/pkg/v${OP_VERSION}/op_linux_${ARCH}_v${OP_VERSION}.zip" -O $OP_ZIPFILE
 
   if [ -f $OP_ZIPFILE ]; then
