@@ -7,8 +7,8 @@ OP_VERSION=0.5.7
 OP_SUBDOMAIN=my
 OP_GNUPG_KEY=3FEF9748469ADBE15DA7CA80AC2D62742012EA22
 OP_SSH_KEY_ITEM='lgkeqx3xzrfbcrkenn6otgg3oq'
-BOOT_SSH_PRIVATE_KEY_FILE=~/.ssh/test_id_rsa
-BOOT_SSH_PUBLIC_KEY_FILE=~/.ssh/test_id_rsa.pub
+BOOT_SSH_PRIVATE_KEY_FILE=~/.ssh/id_rsa
+BOOT_SSH_PUBLIC_KEY_FILE=~/.ssh/id_rsa.pub
 
 welcome_message() {
   cat << EOF
@@ -142,8 +142,9 @@ tmux_install_plugins() {
 }
 
 vim_install_plugins() {
+  mkdir -p ~/.vim/colors
   wget https://www.vim.org/scripts/download_script.php\?src_id\=14937 -O ~/.vim/colors/twilight256.vim
-  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/plugin/Vundle.vim
 }
 
 dotfiles_install() {
