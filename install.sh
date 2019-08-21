@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ARCH=amd64
-APT_REQUIRED_PACKAGES='dirmngr unzip net-tools build-essential git gnupg zsh jq tmux vim'
+APT_REQUIRED_PACKAGES='dirmngr unzip net-tools wget curl build-essential git gnupg zsh jq tmux vim'
 APT_INSTALL_FLAGS='--install-recommends --assume-yes'
 OP_VERSION=0.5.7
 OP_SUBDOMAIN=my
