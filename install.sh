@@ -104,10 +104,8 @@ keymanager_configure() {
 
   sudo mv /tmp/op /usr/local/bin
   sudo chown root:staff /usr/local/bin/op
-
-  while true; do
-    read -p "Provide 1Password username:" OP_USERNAME
-  done
+  
+  read -p "Provide 1Password username:" OP_USERNAME
 
   eval $(op signin $OP_USERNAME $OP_SUBDOMAIN)
 }
