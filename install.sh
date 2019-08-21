@@ -104,7 +104,12 @@ keymanager_configure() {
 
   sudo mv /tmp/op /usr/local/bin
   sudo chown root:staff /usr/local/bin/op
-  eval $(op signin $OP_SUBDOMAIN) 
+
+  while true; do
+    read -p "Provide 1Password username:" OP_USERNAME
+  done
+
+  eval $(op signin $OP_USERNAME $OP_SUBDOMAIN)
 }
 
 keymanager_install_ssh_key_pair() {
