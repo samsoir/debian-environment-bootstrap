@@ -108,12 +108,12 @@ keymanager_configure() {
   while true; do
     echo "Provide 1Password username [ENTER]:"
     read OP_USERNAME
-    if [ "" -ne OP_USERNAME ]; then
+    if [ "" != $OP_USERNAME ]; then
       break
     fi
   done
 
-  eval $(op signin $OP_USERNAME $OP_SUBDOMAIN)
+  eval $(op signin $OP_SUBDOMAIN $OP_USERNAME)
 }
 
 keymanager_install_ssh_key_pair() {
