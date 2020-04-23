@@ -3,7 +3,7 @@
 ARCH=amd64
 APT_REQUIRED_PACKAGES='dirmngr unzip net-tools wget curl build-essential git gnupg zsh jq tmux vim'
 APT_INSTALL_FLAGS='--install-recommends --assume-yes'
-OP_VERSION=0.5.7
+OP_VERSION=0.10.0
 OP_SUBDOMAIN=my
 OP_GNUPG_KEY=3FEF9748469ADBE15DA7CA80AC2D62742012EA22
 OP_SSH_KEY_ITEM='lgkeqx3xzrfbcrkenn6otgg3oq'
@@ -115,6 +115,11 @@ keymanager_configure() {
   done
 
   eval $(op signin $OP_SUBDOMAIN $OP_USERNAME)
+  
+  if [ "" == $OP_SESSION_my ]; then
+    echo "Unable to obtain 1Password session token. Aborting!"
+    exit 1
+  fi
 }
 
 keymanager_install_ssh_key_pair() {
@@ -125,13 +130,31 @@ keymanager_install_ssh_key_pair() {
     exit 1
   fi
 
-  /bin/echo "$(op get item $OP_SSH_KEY_ITEM | jq -r '.details.password')" > $BOOT_SSH_PRIVATE_KEY_FILE
-  chmod og-rwx ~/.ssh/id_rsa
-  if [ "$?" -ne 0 ]; then
-    echo "Unable to change permissions on private key. This will cause problems later."
+  /bin/echo "$(op get item $OP_SSH_KEY_ITEM | jq -r '.details.password')" > $BOOT_SSH_PRIVATE_KEY_FILE.tmp
+  if [ -s $BOOT_SSH_PRIVATE_KEY_FILE.tmp ]; then
+    mv -f $BOOT_SSH_PRIVATE_KEY_FILE.tmp $BOOT_SSH_PRIVATE_KEY_FILE
+    
+    chmod og-rwx $BOOT_SSH_PRIVATE_KEY_FILE
+    if [ "$?" -ne 0 ]; then
+      echo "Unable to change permissions on private key. This will cause problems later."
+    fi
+  else
+    echo "SSH Private Key File is empty. Aborting!"
+    exit 1
   fi
-
-  /bin/echo "$(op get item $OP_SSH_KEY_ITEM | jq -r '.details.sections[0].fields[0].v')" > $BOOT_SSH_PUBLIC_KEY_FILE
+  
+  /bin/echo "$(op get item $OP_SSH_KEY_ITEM | jq -r '.details.sections[0].fields[0].v')" > $BOOT_SSH_PUBLIC_KEY_FILE.tmp
+  if [ -s $BOOT_SSH_PUBLIC_KEY_FILE.tmp ]; then
+    mv -f $BOOT_SSH_PUBLIC_KEY_FILE.tmp $BOOT_SSH_PUBLIC_KEY_FILE
+    
+    chmod og-rwx $BOOT_SSH_PUBLIC_KEY_FILE
+    if [ "$?" -ne 0 ]; then
+      echo "Unable to change permissions on public key. This could cause problems later."
+    fi
+  else
+    echo "SSH Public Key File is empty. Aborting!"
+    exit 1
+  fi
 }
 
 ohmyzsh_install() {
