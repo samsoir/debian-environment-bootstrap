@@ -7,6 +7,7 @@ OP_VERSION=0.5.7
 OP_SUBDOMAIN=my
 OP_GNUPG_KEY=3FEF9748469ADBE15DA7CA80AC2D62742012EA22
 OP_SSH_KEY_ITEM='lgkeqx3xzrfbcrkenn6otgg3oq'
+OP_GNUPG_KEYSERVER='hkps://keyserver.ubuntu.com'
 BOOT_SSH_PRIVATE_KEY_FILE=~/.ssh/id_rsa
 BOOT_SSH_PUBLIC_KEY_FILE=~/.ssh/id_rsa.pub
 
@@ -68,7 +69,7 @@ install_prerequisites() {
 }
 
 1password_obtain_gnupg_key() {
-  gpg --receive-keys $OP_GNUPG_KEY
+  gpg --keyserver $OP_GNUPG_KEYSERVER --receive-keys $OP_GNUPG_KEY
   if [ "$?" -ne 0 ]; then
     echo "Unable to obtain 1Password GNUPG keys for signature verification. Aborting!"
     exit 1
